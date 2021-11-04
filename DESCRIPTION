@@ -1,0 +1,12 @@
+Package: CS599Changepoint
+Type: Package
+Title: Binary and Optimal segmentation
+Version: 2021.11.01
+Author: Hunor Csala
+Maintainer: Hunor Csala <hc595@nau.edu>
+Description: This package provides an implementation of optimal and binary segmentation
+License: GPL-3
+RoxygenNote: 7.1.2
+Imports: data.table, Rcpp (>= 1.0.7), neuroblastoma
+Suggests: testthat, jointseg
+LinkingTo: Rcpp
