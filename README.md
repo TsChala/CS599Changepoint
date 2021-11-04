@@ -1,34 +1,32 @@
-# CS599Clustering
-##### CS599 Unsupervised Learning - R package coding project 1
+# CS599Changepoint
+##### CS599 Unsupervised Learning - R package coding project 2
 This is sample package written for the course CS599 Unsupervised Learning.
-This package includes two unsupervised clustering algorithms:
-- Hiearchical clustering algorithm using the single linkage method
+This package includes two changepoint detection algorithms:
+- Binary segmentation
     - written in R
-- K-Means algorithm
+- Optimal segmentation using dynamic programmin algorithm
     - written in C++ and integrated to R using Rcpp
 ***
 ## Installation
-You can install the latest version of this package from [GitHub](https://github.com/TsChala/CS599Clustering). For installation the *remotes* package is needed.
+You can install the latest version of this package from [GitHub](https://github.com/TsChala/CS599Changepoint). For installation the *remotes* package is needed.
 
     # install.packages("remotes")
-    remotes::install_github("TsChala/CS599Clustering")
+    remotes::install_github("TsChala/CS599Changepoint")
 ***
 ## Usage
-Here is an example code for demonstrating the usage of this package. We can use the HCLUST function for agglomerative hierarchical clustering using the single linkage method. The output is a vector containing the cluster assignments for each data point. This examples uses the iris data set with 3 clusters for demonstration.
+Here is an example code for demonstrating the usage of this package. We can use the DYNPROG_interface function for optimal changepoint detection on the neuroblastoma data set with up to 3 segments. The output will be a loss matrix of dimension [N_data]x[N_segments]
     
-    library(CS599Clustering)
-    data.mat <- iris[,1:4]
-    K <- 3
-    hclust.result <- HCLUST(data.mat,K)
-    > hclust.result
-    #>    [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 3 3 3 3 3 3 3 3 3
-    #>    [60] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3
-    #>    [119] 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
+    data(neuroblastoma, package="neuroblastoma")
+    library(data.table)
+    nb.dt <- data.table(neuroblastoma$profiles)
+    data.dt <- nb.dt[profile.id=="1" & chromosome=="1"]
+    DYNPROG_interface(data.dt$logratio,3)
 
-The second function that we have in this package is the kmeansclust_interface, which is the implementation of the K-means clustering algorithm in C++ using Rcpp. It is noted that the input should be a numeric matrix, otherwise the function cannot run. The returned values are the cluster assignments to each data point.
+Binary segmentation for changepoint detection. As an example we can use this function on a sequential data set from the neuroblastome package. The result will be a vector containint the square loss values for segments 1 to 3.
 
-    kmeansclust_interface(as.matrix(iris[,1:2]),3)
-    #>  [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 3 2 3 2 3 2
-    #>  [60] 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 2 2 2 2 3 3 3 3 3 3 3 3 2 3 3 3 3 3 3 3 3 3 3 3 3 3 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 2 2
-    #>  [119] 2 3 2 3 2 3 2 2 3 3 2 2 2 2 2 3 3 2 2 2 3 2 2 2 3 2 2 2 3 2 2 3
+    data(neuroblastoma, package="neuroblastoma")
+    library(data.table)
+    nb.dt <- data.table(neuroblastoma$profiles)
+    data.dt <- nb.dt[profile.id=="1" & chromosome=="1"]
+    BINSEG(data.dt$logratio,3)
     
