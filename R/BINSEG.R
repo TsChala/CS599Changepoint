@@ -3,7 +3,7 @@
 #' Binary segmentation for changepoint detection on a sequential data set up to K segments
 #'
 #' @param data.vec input data vector, [number of data points]
-#' @param K number of segments
+#' @param Kmax max number of segments
 #'
 #' @return Vector of square loss values, [number of segments]
 #' @export
@@ -17,10 +17,9 @@
 #' data.dt <- nb.dt[profile.id=="1" & chromosome=="1"]
 #' BINSEG(data.dt$logratio,3)
 BINSEG <- function(data.vec, Kmax){
-  library(data.table)
-  data.dt <- data.table(logratio = data.vec)
+  data.dt <- data.table::data.table(logratio = data.vec)
   data.dt[, cum.data := cumsum(logratio)]
-  possible.dt <- data.table(
+  possible.dt <- data.table::data.table(
     first_seg_end = seq(1, nrow(data.dt)-1))
   ## Loss = sum of squares - sum^2/n.
   loss <- function(cum.sum.vec, cum.square.vec, N.data.vec){
@@ -53,8 +52,8 @@ BINSEG <- function(data.vec, Kmax){
   total.loss.list[2] <- possible.dt[order(total_loss)]$total_loss[1]
   
   new.segs <- possible.dt[which.min(total_loss), rbind(
-    data.table(start=1, end=first_seg_end),
-    data.table(start=first_seg_end+1, end=nrow(data.dt)))]
+    data.table::data.table(start=1, end=first_seg_end),
+    data.table::data.table(start=first_seg_end+1, end=nrow(data.dt)))]
   
   all.no.split.loss <- list()
   all.no.split.loss[1] <- 0
@@ -68,7 +67,7 @@ BINSEG <- function(data.vec, Kmax){
       one.seg <- new.segs[seg.i]
       one.seg$start <- unlist(one.seg$start)
       one.seg$end <- unlist(one.seg$end)
-      new.possible.dt <- one.seg[, data.table(
+      new.possible.dt <- one.seg[, data.table::data.table(
         first_seg_end=seq(start, end-1))]
       if(K == 2){
         if(seg.i==1){
@@ -127,8 +126,8 @@ BINSEG <- function(data.vec, Kmax){
         all.no.split.loss[K]=possible.dt[which.min(total_loss)]$first_seg_loss
       }
     }
-    new.segs <- rbind(data.table(start = split.before, end = max.decrease),
-                      data.table(start=max.decrease+1, end = split.after))
+    new.segs <- rbind(data.table::data.table(start = split.before, end = max.decrease),
+                      data.table::data.table(start=max.decrease+1, end = split.after))
     total.loss.two.seg <- all.new.possible.dt[which.max(loss_decrease)]$split_loss
     previous.no.split.loss.before <- all.new.possible.dt[which.max(loss_decrease)]$first_seg_loss
     previous.no.split.loss.after <- all.new.possible.dt[which.max(loss_decrease)]$second_seg_loss

@@ -9,7 +9,7 @@ BINSEG(data.vec, Kmax)
 \arguments{
 \item{data.vec}{input data vector, [number of data points]}
 
-\item{K}{number of segments}
+\item{Kmax}{max number of segments}
 }
 \value{
 Vector of square loss values, [number of segments]
