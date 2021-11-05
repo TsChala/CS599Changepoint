@@ -8,5 +8,5 @@ Description: This package provides an implementation of optimal and binary segme
 License: GPL-3
 RoxygenNote: 7.1.2
 Imports: data.table, Rcpp (>= 1.0.7), neuroblastoma
-Suggests: testthat, jointseg
+Suggests: testthat, jointseg, binsegRcpp
 LinkingTo: Rcpp

@@ -44,7 +44,7 @@ Here is an example code for demonstrating the usage of this package. We can use 
     #>    [19,] -4.8488148  -4.860635e+00  -4.905971e+00
     #>    [20,] -5.1592916  -5.173803e+00  -5.213123e+00
 
-Binary segmentation for changepoint detection. As an example we can use this function on a sequential data set from the neuroblastome package. The result will be a vector containint the square loss values for segments 1 to 3.
+Binary segmentation for changepoint detection. As an example we can use this function on a sequential data set from the neuroblastoma package. The result will be a vector containing the square loss values for segments 1 to 3.
 
     data(neuroblastoma, package="neuroblastoma")
     library(data.table)
@@ -52,5 +52,5 @@ Binary segmentation for changepoint detection. As an example we can use this fun
     data.dt <- nb.dt[profile.id=="1" & chromosome=="1"]
     binseg.result <- BINSEG(data.dt$logratio,3)
     binseg.result
-    #>    [1] 1.1220205 0.8162898 0.7037958
+    #>    [1] 15.914987  7.404857  5.57301
     
